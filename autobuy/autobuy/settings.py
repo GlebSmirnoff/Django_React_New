@@ -28,20 +28,47 @@ SECRET_KEY = 'django-insecure-8ycnv6^!kb1279m!fqj+kk$20p=p-+bdh9@&$c^xi7$*1bv*%1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+"unfold",
+    "unfold.contrib.filters",
+    "unfold.contrib.forms",
+    "unfold.contrib.inlines",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
+    "wagtail",
+    "modelcluster",
+    "taggit",
+
     'assistant',
+    "cms_pages",
+    'users.apps.UsersConfig',
 ]
+
+AUTH_USER_MODEL = 'users.User'
+
+WAGTAILADMIN_BASE_URL = "http://127.0.0.1:8000"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
 ROOT_URLCONF = 'autobuy.urls'
@@ -87,6 +115,17 @@ DATABASES = {
     }
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    # если фронт будет слать запросы:
+    "http://localhost:5173",
+]
+
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -128,3 +167,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+WAGTAIL_SITE_NAME = "Autobuy"
+
+# Social auth settings
+SOCIAL_GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+SOCIAL_GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+SOCIAL_FACEBOOK_APP_ID = os.getenv('FB_APP_ID')
+SOCIAL_FACEBOOK_APP_SECRET = os.getenv('FB_APP_SECRET')
+SOCIAL_APPLE_CLIENT_ID = os.getenv('APPLE_CLIENT_ID')
+SOCIAL_APPLE_TEAM_ID = os.getenv('APPLE_TEAM_ID')
+SOCIAL_APPLE_KEY_ID = os.getenv('APPLE_KEY_ID')
+SOCIAL_APPLE_PRIVATE_KEY = os.getenv('APPLE_PRIVATE_KEY')
